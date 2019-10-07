@@ -20,6 +20,17 @@ form {
 pre {
   flex-grow: 1;
 
-  padding: 0 2rem;
+  padding: 1rem 2rem;
   border-left: 1px solid gray;
+}
+
+@media (max-width: 800px) {
+  .container {
+    flex-direction: column;
+  }
+
+  pre {
+    border-left: none;
+    border-top: 1px solid gray;
+  }
 }
