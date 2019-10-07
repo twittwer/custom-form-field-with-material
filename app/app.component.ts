@@ -1,41 +1,55 @@
-import {
-  Component,
-  ElementRef,
-  AfterContentInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterContentInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import { merge, Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'material-app',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
+  styleUrls: [ 'app.component.scss' ],
 })
-export class AppComponent implements AfterContentInit {
-  state = new BehaviorSubject({});
+export class AppComponent implements OnInit, AfterContentInit, OnDestroy {
+  state$: Observable<{}>;
+  submit$ = new Subject<void>();
 
   form = this.fb.group({
-    standard: [''],
-    custom: [''],
-    requiredStandard: ['', Validators.required],
-    requiredCustom: ['', Validators.required],
+    standard: [ '' ],
+    custom: [ '' ],
+    easy: [ '' ],
+    requiredStandard: [ '', Validators.required ],
+    requiredCustom: [ '', Validators.required ],
+    requiredEasy: [ '', Validators.required ],
+    emailStandard: [ '', Validators.email ],
+    emailCustom: [ '', Validators.email ],
+    emailEasy: [ '', Validators.email ],
   });
 
   @ViewChild('submitButton', { static: false, read: ElementRef })
   submitButton: ElementRef;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+  }
+
+  ngOnInit() {
+    this.state$ = merge(this.form.valueChanges, this.submit$).pipe(map(() => this.buildFormState()));
+  }
 
   ngAfterContentInit() {
-    setTimeout(() => {
-      (this.submitButton.nativeElement as HTMLButtonElement).click();
-    }, 500);
+    // setTimeout(() => {
+    //   (this.submitButton.nativeElement as HTMLButtonElement).click();
+    // }, 500);
+  }
+
+  ngOnDestroy() {
+    this.submit$.complete();
   }
 
   onSubmit() {
     console.log('onSubmit');
+    this.submit$.next();
+  }
 
+  private buildFormState() {
     const form = {
       name: 'form',
       valid: this.form.valid,
@@ -44,23 +58,28 @@ export class AppComponent implements AfterContentInit {
     const fields = [
       'standard',
       'custom',
+      'easy',
       'requiredStandard',
       'requiredCustom',
+      'requiredEasy',
+      'emailStandard',
+      'emailCustom',
+      'emailEasy',
     ].map(field => ({
       name: field,
       valid: this.form.get(field).valid,
       value: this.form.get(field).value,
     }));
 
-    console.table([form, ...fields]);
-    this.state.next(
-      [form, ...fields].reduce(
-        (acc, { name, ...meta }) => ({
-          ...acc,
-          [name]: meta,
-        }),
-        {},
-      ),
+    const formState = [ form, ...fields ].reduce(
+      (acc, { name, ...meta }) => ({
+        ...acc,
+        [name]: meta,
+      }),
+      {},
     );
+
+    console.table(formState);
+    return formState;
   }
 }
