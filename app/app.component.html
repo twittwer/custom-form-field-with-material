@@ -1,53 +1,54 @@
 <mat-toolbar color="primary">
-	Custom Form Field with Angular Material
+    Custom Form Field with Angular Material
 </mat-toolbar>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<div class="container">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-	<mat-form-field>
-		<input
-      matInput
-      type="text"
-      formControlName="standard"
-      placeholder="standard"
-    />
-		<mat-error>Error in standard</mat-error>
-	</mat-form-field>
+        <mat-form-field>
+            <input
+                    matInput
+                    type="text"
+                    formControlName="standard"
+                    placeholder="standard"
+            />
+            <mat-error>Error in standard</mat-error>
+        </mat-form-field>
 
-	<mat-form-field>
-		<app-custom-input
-      formControlName="custom"
-      placeholder="custom"
-    ></app-custom-input>
-		<mat-error>Error in custom</mat-error>
-	</mat-form-field>
+        <mat-form-field>
+            <app-custom-input
+                    formControlName="custom"
+                    placeholder="custom"
+            ></app-custom-input>
+            <mat-error>Error in custom</mat-error>
+        </mat-form-field>
 
-	<mat-form-field>
-		<input
-      matInput
-      type="text"
-      formControlName="requiredStandard"
-      placeholder="requiredStandard"
-    />
-		<mat-error>Error in requiredStandard</mat-error>
-	</mat-form-field>
+        <mat-form-field>
+            <input
+                    matInput
+                    type="text"
+                    formControlName="requiredStandard"
+                    placeholder="requiredStandard"
+            />
+            <mat-error>Error in requiredStandard</mat-error>
+        </mat-form-field>
 
-	<mat-form-field>
-		<app-custom-input
-      formControlName="requiredCustom"
-      placeholder="requiredCustom"
-    ></app-custom-input>
-		<mat-error>Error in requiredCustom</mat-error>
-	</mat-form-field>
+        <mat-form-field>
+            <app-custom-input
+                    formControlName="requiredCustom"
+                    placeholder="requiredCustom"
+            ></app-custom-input>
+            <mat-error>Error in requiredCustom</mat-error>
+        </mat-form-field>
 
-	<button
-    mat-raised-button
-    color="accent"
-    #submitButton
-  >
-    Submit
-  </button>
-</form>
+        <button
+                mat-raised-button
+                color="accent"
+                #submitButton
+        >
+            Submit
+        </button>
+    </form>
 
-<hr>
-<pre>{{state|async|json}}</pre>
+    <pre>{{state|async|json}}</pre>
+</div>
