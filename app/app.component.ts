@@ -15,13 +15,10 @@ export class AppComponent implements OnInit, AfterContentInit, OnDestroy {
   form = this.fb.group({
     standard: [ '' ],
     custom: [ '' ],
-    easy: [ '' ],
     requiredStandard: [ '', Validators.required ],
     requiredCustom: [ '', Validators.required ],
-    requiredEasy: [ '', Validators.required ],
     emailStandard: [ '', Validators.email ],
     emailCustom: [ '', Validators.email ],
-    emailEasy: [ '', Validators.email ],
   });
 
   @ViewChild('submitButton', { static: false, read: ElementRef })
@@ -58,13 +55,10 @@ export class AppComponent implements OnInit, AfterContentInit, OnDestroy {
     const fields = [
       'standard',
       'custom',
-      'easy',
       'requiredStandard',
       'requiredCustom',
-      'requiredEasy',
       'emailStandard',
       'emailCustom',
-      'emailEasy',
     ].map(field => ({
       name: field,
       valid: this.form.get(field).valid,
